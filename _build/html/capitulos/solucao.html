@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Solução Implementada &#8212; Documentação websig_ia_rs 1.0</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Pesquisar" href="../search.html" />
+    <link rel="next" title="Conclusões" href="conclusoes.html" />
+    <link rel="prev" title="Origem dos dados" href="origem.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="solucao-implementada">
+<h1>Solução Implementada<a class="headerlink" href="#solucao-implementada" title="Link permanente para este título">¶</a></h1>
+<section id="organizacao-dos-dados">
+<h2>Organização dos Dados<a class="headerlink" href="#organizacao-dos-dados" title="Link permanente para este título">¶</a></h2>
+<p>A estrutura do sistema está organizada em três camadas:
+camada de dados (GeoJSON), onde os dados geográficos e
+alfanuméricos de casos de COVID-19 e de população estão
+armazenados; camada aplicacional (GitHub), que permite
+publicar na internet; e camada cliente (HTML, CSS e JavaScript,
+incluindo Leaflet), que suporta as funcionalidades do
+WebSIG e define como a informação é apresentada.</p>
+<figure class="align-center" id="id1">
+<img alt="../_images/camadas.jpg" src="../_images/camadas.jpg" />
+<figcaption>
+<p><span class="caption-text">Figura 1 - Arquitetura do Projeto</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="pre-processamento-e-preparacao-dos-dados-geograficos">
+<h2>Pré-processamento e preparação dos Dados Geográficos<a class="headerlink" href="#pre-processamento-e-preparacao-dos-dados-geograficos" title="Link permanente para este título">¶</a></h2>
+<p>Para carregar os dados dentro do projeto, a primeira etapa passou
+por converter os dados para o formato GeoJSON. Para isso optou-se
+por utilizar o software QGIS para efetuar um join dos dados com
+a informação dos distritos em formato shapefile, sendo para isso
+necessário adicionar em ambas as tabelas um campo em comum. No caso
+optou-se pelo campo designado DD, que permite identificar unicamente
+cada distrito.</p>
+<p>Foi necessário converter o sistema de coordenadas
+dos dados originais para o sistema de coordenadas global WGS84, e de
+seguida foi exportado para formato GeoJSON (Export - GeoJSON). O formato
+GeoJSON é muito utilizado em serviços web, sendo facilmente interpretado
+pela biblioteca de mapas que será utilizada no projeto - a Leaflet. Esta
+biblioteca JavaScript open-source de fácil utilização disponibiliza
+gratuitamente diversos recursos e plugins para a criação de mapas
+interativos e permite adicionar vários tipos de camadas.</p>
+<p>O ficheiro GeoJSON criado corresponde à camada de dados do projeto,
+pois é o repositório dos dados apresentados no WebSIG.</p>
+</section>
+<section id="desenvolvimento-do-projeto">
+<h2>Desenvolvimento do Projeto<a class="headerlink" href="#desenvolvimento-do-projeto" title="Link permanente para este título">¶</a></h2>
+<p>Após o pré-processamento dos dados geográficos e de modo a visualizar no WebSIG
+a informação geográfica presente no GeoJSON, o
+passo seguinte incidiu na criação das páginas HTML, utilizando o editor
+de texto Notepad++. Os ficheiros HTML têm uma estrutura base composta
+pelas seguintes tags: html, head e body, delimitadas por ‘&lt; ‘e ‘&gt;’,
+respeitando uma organização hierárquica, ou seja:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>A tag &lt;html&gt; corresponde ao elemento de raiz de uma página HTML, &lt;head&gt; contém
+meta-informação e &lt;body&gt; define o corpo do documento, contendo todos os conteúdos
+visíveis da página HTML (<a class="reference external" href="https://www.w3schools.com/html/html_intro.asp">https://www.w3schools.com/html/html_intro.asp</a>).</p>
+<p>Para o desenvolvimento do projeto foram criados 4 ficheiros HTML correspondentes
+aos quatro mapas com os casos de COVID-19 em Portugal continental entre setembro
+e dezembro de 2020, e 1 ficheiro HTML que integra e estrutura a informação dos
+restantes ficheiros na página do WebSIG.</p>
+<p>A opção de estruturar o projeto em 4 ficheiros HTML para os mapas e outro para a
+sua integração permite que o código seja mais simples e a informação esteja mais
+organizada, facilitando a respetiva manutenção ou alteração. A estruturação do
+projeto em apenas um ficheiro HTML tornaria o código menos legível e dificultaria
+a gestão da informação. Na mesma perspetiva, os recursos do WebSIG estão organizados
+em pastas, de forma a facilitar a sua consulta a manutenção.</p>
+<p>Para a apresentação dos mapas no WebSIG optou-se por tirar partido de uma
+biblioteca JavaScript que disponibilizasse as funcionalidades necessárias,
+tendo sido utilizada a Leaflet (<a class="reference external" href="https://leafletjs.com/">https://leafletjs.com/</a>).</p>
+<p>A estrutura, simbologia e funcionalidades dos mapas são definidas com recursos
+online da Leaflet, através da importação de um ficheiro CSS, que define os
+estilos do mapa, e de um ficheiro JavaScript, que define os aspetos
+interativos do mapa. Foram utilizados recursos disponibilizados online, tendo
+em conta que não houve necessidade de tornar a aplicação local.</p>
+<p>Os recursos online de CSS e JavaScript são acedidos através da inclusão no
+&lt;head&gt; das tags &lt;link&gt; e &lt;script&gt;, respetivamente. A tag “integrity” destina-se
+a assegurar que o recurso disponível naquele URL é o pretendido e não foi alterado.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.3.4/dist/leaflet.css&quot;</span>
+    <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==&quot;</span>
+    <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">/&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.3.4/dist/leaflet.js&quot;</span>
+    <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==&quot;</span>
+    <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>No &lt;body&gt;, é criada uma “div” para apresentação do mapa, ligando aos recursos
+Leaflet através de JavaScript.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;height: 500px&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
+
+        var map = L.map(&#39;map&#39;, {
+          center: [39.694502, -8.130573],
+          zoom: 7
+      });
+</pre></div>
+</div>
+<p>No bloco de código JavaScript onde é feita a integração com o Leaflet são
+definidos vários aspetos referentes ao mapa, nomeadamente o ponto central e zoom
+inicial do mapa (função L.map), origem dos tiles que formam o mapa de base e zoom máximo
+e mínimo (função L.tileLayer), intervalos e cores das classes definidas
+(função getColor), bem como o estilo (função style) e funcionalidades interativas
+do mapa (função highlightFeature).</p>
+<p>Para a ligação ao ficheiro GeoJSON, é definida no &lt;head&gt; a fonte dos dados.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;dados/dados_covid_distr_simpl.geojson&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>A identificação da fonte e definições de como a informação constante do GeoJSON
+será apresentada no mapa é feita através da função L.geoJson.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>geojson = L.geoJson(data, {
+    style:style,
+    onEachFeature: onEachFeature
+}).bindTooltip(function (layer){
+    return layer.feature.properties.Distrito
+           + &#39;<span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color:#2d862d&quot;</span><span class="p">&gt;</span>&#39; + layer.feature.properties.Casos10k_2.toString() + &#39; casos por 10.000 hab. <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>&#39;;
+}).addTo(map);
+</pre></div>
+</div>
+<p>Os estilos da legenda do mapa estão definidos no ficheiro legendas.css,
+sendo a respetiva origem identificada no &lt;head&gt; através da tag &lt;link&gt;.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;css/legendas.css&quot;</span><span class="p">/&gt;</span>
+</pre></div>
+</div>
+<p>Foram definidas as características da legenda, nomeadamente a sua
+posição relativa (função L.control), intervalos de classes, título
+da legenda e labels (função onAdd). A legenda é adicionada ao mapa
+através da função legend.addTo(map).</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>var legend = L.control({position: &#39;bottomleft&#39;});
+
+ legend.onAdd = function (map) {
+     var div = L.DomUtil.create(&#39;div&#39;, &#39;legend&#39;),
+     grades = [0, 10, 25, 50, 100, 150, 200];
+
+     div.innerHTML = &#39;&lt;b&gt;Casos por 10.000 hab. &lt;br&gt;&lt;/b&gt;&#39;;
+     for (var i = 0; i &lt; grades.length; i++) {
+         div.innerHTML +=
+         &#39;&lt;i style=&quot;background:&#39; + getColor(grades[i] + 1) + &#39;&quot;&gt;&lt;/i&gt;&#39; +
+         grades[i] + (grades[i + 1] ? &#39;&amp;ndash;&#39; + grades[i + 1] + &#39;&lt;br&gt;&#39; : &#39;+&#39;);
+     }
+     return div;
+ };
+
+ legend.addTo(map);
+</pre></div>
+</div>
+<p>O ficheiro HTML que agrega os 4 mapas designa-se “index.html”, de modo
+a ser reconhecido como o ficheiro HTML principal pelo servidor web.
+Os estilos da página web estão definidos no &lt;head&gt; através da tag
+&lt;style&gt;, onde estão indicadas as características do corpo da página
+(tag body), o alinhamento dos elementos (tag div) e estilo do rodapé
+(tag footer). É também criada a classe .mapa, que define as dimensões e
+características que cada mapa terá.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="nt">html</span><span class="o">,</span>
+    <span class="nt">body</span> <span class="p">{</span>
+        <span class="k">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">background-color</span><span class="p">:</span> <span class="mh">#e6e6e6</span><span class="p">;</span>
+        <span class="k">font-family</span><span class="p">:</span> <span class="n">Arial</span><span class="p">,</span> <span class="n">Helvetica</span><span class="p">,</span> <span class="kc">sans-serif</span><span class="p">;</span>
+        <span class="p">}</span>
+
+    <span class="nt">div</span> <span class="p">{</span>
+        <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span>
+        <span class="p">}</span>
+
+    <span class="p">.</span><span class="nc">mapa</span> <span class="p">{</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">50</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">550</span><span class="kt">px</span><span class="p">;</span>
+        <span class="k">float</span><span class="p">:</span> <span class="kc">left</span><span class="p">;</span>
+        <span class="k">margin-bottom</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+        <span class="p">}</span>
+
+    <span class="nt">footer</span> <span class="p">{</span>
+        <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span>
+        <span class="k">margin-top</span><span class="p">:</span> <span class="mi">200</span><span class="kt">px</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>No &lt;body&gt; são criadas as div para o cabeçalho e os 4 mapas, com as respetivas
+características.
+O cabeçalho corresponde a uma tabela (tag table), com a inserção de uma
+imagem correspondente ao logotipo do IGOT (tag img).</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">table</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width:100%; border-spacing: 20px;&quot;</span> <span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;img/logo-igot-cor.png&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width: 296px;height: 85px;&quot;</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>Mestrado em Sistemas de Informação Geográfica e Modelação Territorial aplicados ao
+                Ordenamento<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>WEBSIG 2020/2021<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Distribuição de casos de COVID-19 em Portugal continental (Set. a Dez. 2020)<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">div</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;text-align: left;&quot;</span><span class="p">&gt;</span>
+                Dados de casos de COVID-19 por 10.000 habitantes em Portugal Continental, por distrito, entre setembro e dezembro de 2020. Trabalho realizado no âmbito da Unidade Curricular de WEBSIG ........
+                <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Para a integração da informação dos 4 HMTL referentes aos mapas,
+foi utilizada a tag iframe, tendo sido criada uma div para cada um,
+com a definição do título, fonte, entre outras características.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mapa&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>SETEMBRO 2020<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">frameBorder</span><span class="o">=</span><span class="s">&quot;0&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;index_set.html&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">title</span><span class="o">=</span><span class="s">&quot;SETEMBRO&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    div class=&quot;mapa&quot;&gt;
+        <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>OUTUBRO 2020<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">frameBorder</span><span class="o">=</span><span class="s">&quot;0&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;index_out.html&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">title</span><span class="o">=</span><span class="s">&quot;OUTUBRO&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mapa&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>NOVEMBRO 2020<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">frameBorder</span><span class="o">=</span><span class="s">&quot;0&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;index_nov.html&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">title</span><span class="o">=</span><span class="s">&quot;NOVEMBRO&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mapa&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>DEZEMBRO 2020<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">frameBorder</span><span class="o">=</span><span class="s">&quot;0&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;index_dez.html&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;95%&quot;</span> <span class="na">title</span><span class="o">=</span><span class="s">&quot;DEZEMBRO&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>O rodapé foi criado através da tag footer.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>&lt;footer&gt;
+    &lt;p&gt;&lt;b&gt;Autoras:&lt;/b&gt; Inês Almiro &amp; Raquel Santos&lt;/p&gt;
+&lt;/footer&gt;
+</pre></div>
+</div>
+</section>
+<section id="publicacao-do-projeto">
+<h2>Publicação do Projeto<a class="headerlink" href="#publicacao-do-projeto" title="Link permanente para este título">¶</a></h2>
+<p>Para apresentar cartograficamente os dados relativos ao
+número de infetados associados à COVID-19, por distrito, na internet,
+foi utilizado o GitHub, uma plataforma para alojamento de código, muito
+utilizada por programadores. O GitHub permite criar gratuitamente um
+repositório, bem como publicar o projeto online.
+Corresponde à camada aplicacional do projeto desenvolvido, funcionando como servidor de HTTP.</p>
+<p>No âmbito do projeto foi criado um repositório designado “websig_ia_rs”,
+onde foram inseridos os ficheiros respeitantes ao projeto (<a class="reference external" href="https://github.com/websigia/websig_ia_rs.git">https://github.com/websigia/websig_ia_rs.git</a>).
+O projeto está disponível no endereço URL fornecido pelo
+GitHub: <a class="reference external" href="https://websigia.github.io/websig_ia_rs/">https://websigia.github.io/websig_ia_rs/</a>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">websig_ia_rs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption"><span class="caption-text">Capítulos:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="objetivos.html">Objetivos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="origem.html">Origem dos dados</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solução Implementada</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#organizacao-dos-dados">Organização dos Dados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-processamento-e-preparacao-dos-dados-geograficos">Pré-processamento e preparação dos Dados Geográficos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#desenvolvimento-do-projeto">Desenvolvimento do Projeto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#publicacao-do-projeto">Publicação do Projeto</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="conclusoes.html">Conclusões</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="origem.html" title="capítulo anterior">Origem dos dados</a></li>
+      <li>Next: <a href="conclusoes.html" title="próximo capítulo">Conclusões</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Pesquisa rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, IA_RS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/capitulos/solucao.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
